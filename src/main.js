@@ -27,7 +27,7 @@ define([
         evt.preventDefault();
 
         name = query.NodeList([evt.target]).text().trim();
-        this.emit('place-selected', name, this.featuredPlaces[name]);
+        this.emit('place-selected', name);
       })); 
     },
   });

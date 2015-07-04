@@ -4,8 +4,9 @@ define([
   'featuredPlacesWidget',
   'dojo/_base/array',
   'dojo/query',
+  'dojo/dom-attr',
   'dojo/NodeList-manipulate'
-], function (registerSuite, assert, FeaturedPlaces, array, dojoQuery) {
+], function (registerSuite, assert, FeaturedPlaces, array, dojoQuery, domAttr) {
   var config, createFixture, widget, clickEvent, ul;
 
   config = {
@@ -22,11 +23,11 @@ define([
     return evt;
   };
 
-  createFixture = function () {
+  createFixture = function (id) {
     var ul, body;
 
     ul = document.createElement('ul');
-    ul.id = 'featuredPlaces';
+    ul.id = id;
     body = document.getElementsByTagName('body')[0];
 
     body.appendChild(ul);
@@ -37,7 +38,7 @@ define([
     name: 'Featured Places Widget',
 
     beforeEach: function () {
-      ul = createFixture();
+      ul = createFixture('featuredPlaces');
       widget = new FeaturedPlaces({ featuredPlaces: config }, 'featuredPlaces');
     },
 
@@ -51,6 +52,21 @@ define([
       array.forEach(widget.getChildren(), function (elt) {
         assert.isDefined(config[dojoQuery(elt.domNode).text()]);
       });
+    },
+
+    'Must pass on the itemOpts to the li children': function () {
+      var widget;
+
+      widget = new FeaturedPlaces({
+        featuredPlaces: config,
+        itemOpts: { 'data-dismiss': 'modal' }
+      });
+
+      dojoQuery('li', widget.domNode).forEach(function (node) {
+        assert.strictEqual(domAttr.get(node, 'data-dismiss'), 'modal');
+      }); 
+
+      widget.destroy();
     },
 
     'Must emit an event on place selection': function () {
