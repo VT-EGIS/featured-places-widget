@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no'>
+    <meta name='description' content='Featured Places Widget Example'>
+    <title>Featured Places Widget Example</title>
+    <style>
+      /* General style rules */
+    </style>
+  </head>
+
+  <body>
+    <div id='featuredPlaces'>Featured Places</div>
+
+    <script>
+      (function() {
+        var packagePath = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
+
+        window.dojoConfig = {
+          packages: [
+            { name: 'app', location: packagePath + '/js' } ,
+            { name: 'featuredPlacesWidget', location: packagePath + '/../src' }
+          ]
+        };
+      }());
+    </script>
+
+    <script src='//js.arcgis.com/3.13/'></script>
+
+    <script>
+      require([
+        'app',
+        'dojo/domReady!',
+      ], function (App) {
+        new App();
+      });
+    </script>
+
+  </body>
+</html>
